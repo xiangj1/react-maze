@@ -1,8 +1,21 @@
 import Element from './Element';
 
 export default class Monster extends Element {
-    constructor(score = -5) {
+    constructor(char = 'M') {
         super('Monster');
-        this.score = score;
+        this.char = char;
+    }
+
+    static isMonster(object) {
+        return object instanceof Monster;
+    }
+}
+
+Monster.items = {
+    snake: {
+        char: '🐍'
+    },
+    crocodile: {
+        char: '🐊'
     }
 }
