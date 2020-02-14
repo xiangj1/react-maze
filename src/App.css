@@ -27,6 +27,18 @@
   background-size: .5em .5em;
 }
 
+.popup-content {
+  background-color: #454545 !important;
+  justify-content: center;
+}
+
+.image {
+  max-width: 300px;
+  max-height: 300px;
+  display: flex;
+  margin: auto;
+}
+
 .App {
   text-align: center;
 }

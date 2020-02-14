@@ -54,42 +54,50 @@ export default class Maze {
         [grid[r1][c1], grid[r2][c2]] = [grid[r2][c2], grid[r1][c1]]
     }
 
+    hasKey = () => {
+        let { items } = this;
+        for (let item of items) {
+            if (Key.isKey(item))
+                return true;
+        }
+        return false;
+    }
+
     move = (x, y) => {
-        let { grid, swap, player } = this;
+        let { grid, swap, player, hasKey } = this;
         let [i, j] = player.position;
-        try {
-            let [r, c] = [i + x, j + y];
 
-            if (!this.isValid(r, c)) {
-                throw 'Invalid Move';
-            }
+        let [r, c] = [i + x, j + y];
 
+        if (!this.isValid(r, c)) {
+            return {};
+        }
 
-            let foundItem = false;
-            let message = 'Success Move';
+        let result = {};
 
 
-
-            if (Treasure.isTreasure(grid[r][c]) || Key.isKey(grid[r][c])) {
-                foundItem = true;
-                message = grid[r][c].message;
-                grid[r][c] = new Road();
-            }
-
-            swap([i, j], [r, c]);
-            player.position = [r, c];
-
+        if (Door.isDoor(grid[r][c]) && !hasKey()) {
             return {
-                status: true,
-                foundItem,
-                message,
-            }
-        } catch (err) {
-            return {
-                status: false,
-                message: err,
+                foundItem: true,
+                message: '这个门看起来是出口，但好像锁住了我打不开……'
             }
         }
+
+        if (Treasure.isTreasure(grid[r][c]) || Key.isKey(grid[r][c]) || Door.isDoor(grid[r][c])) {
+            result.foundItem = true;
+            result.message = grid[r][c].message;
+
+            if (Treasure.isTreasure(grid[r][c])) {
+                result.photo = grid[r][c].photo;
+            }
+            this.items.push(grid[r][c]);
+            grid[r][c] = new Road();
+        }
+
+        swap([i, j], [r, c]);
+        player.position = [r, c];
+
+        return result;
 
     }
 }

@@ -13,9 +13,9 @@ export default class Monster extends Element {
 
 Monster.items = {
     snake: {
-        char: '🐍'
+        char: ' '
     },
     crocodile: {
-        char: '🐊'
+        char: ' '
     }
 }
